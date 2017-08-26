@@ -1,0 +1,66 @@
+
+<h2 class="text-center">{{i18n $.locale ($.records | ModelName)}}</h2>
+{{if $.FSearchSets}}
+<div class="pull-right dropdown">
+    <a href="{{.AppUrl}}{{($.records | ModelName)}}" class="dropdown-toggle btn btn-small btn-primary" data-toggle="dropdown">
+        {{i18n .Lang "search"}}
+    </a>
+    <form style="padding: 20px 20px 20px 20px" id="dropdown-login" class="dropdown-menu cell" action="{{.AppUrl}}{{($.records | ModelName)}}" method="GET">
+        {{.xsrf_html}}{{.once_html}}
+        {{template "common/form/fields.html" $.FSearchSets}}
+
+        {{ CommonTag "submit" (i18n .Lang "search") "class=btn btn-xs btn-primary" }}
+    </form>
+</div>
+{{end}}
+<hr/>
+
+{{if gt (.records | len) 0}}
+<table class="table table-responsive table-striped">
+    <thead>
+        <tr>
+        {{range $index, $field := .records | Keys}}
+            <th>{{ i18n $.locale (printf "column.%s" $field) }}</th>
+        {{end}}
+        </tr>
+    </thead>
+    <tbody>
+    {{range $index, $record := .records}}
+      <tr>
+          {{ $values := $record | Values}}
+          {{range $index, $value := $values}}
+          <td> {{ $value }} </td>
+          {{end}}
+      </tr>
+    {{end}}
+    </tbody>
+
+</table>
+{{end}}
+
+{{if gt .paginator.PageNums 1}}
+
+<ul class="pagination pagination-small" >
+    {{if .paginator.HasPrev}}
+    <li><a href="{{.paginator.PageLinkFirst}}">First</a></li>
+    <li><a href="{{.paginator.PageLinkPrev}}">&lt;</a></li>
+    {{else}}
+    <li class="disabled"><a>First</a></li>
+    <li class="disabled"><a>&lt;</a></li>
+    {{end}}
+    {{range $index, $page := .paginator.Pages}}
+    <li{{if $.paginator.IsActive .}} class="active" {{end}} >
+    <a href="{{$.paginator.PageLink $page}}">{{$page}}</a>
+    </li>
+    {{end}}
+    {{if .paginator.HasNext}}
+    <li><a href="{{.paginator.PageLinkNext}}">&gt;</a></li>
+    <li><a href="{{.paginator.PageLinkLast}}">Last</a></li>
+    {{else}}
+    <li class="disabled"><a>&gt;</a></li>
+    <li class="disabled"><a>Last</a></li>
+    {{end}}
+</ul>
+
+{{end}}
+
