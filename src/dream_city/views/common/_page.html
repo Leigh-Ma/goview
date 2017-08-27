@@ -5,11 +5,11 @@
     <a href="{{.AppUrl}}{{($.records | ModelName)}}" class="dropdown-toggle btn btn-small btn-primary" data-toggle="dropdown">
         {{i18n .Lang "search"}}
     </a>
-    <form style="padding: 20px 20px 20px 20px" id="dropdown-login" class="dropdown-menu cell" action="{{.AppUrl}}{{($.records | ModelName)}}" method="GET">
+    <form style="padding: 20px 20px 20px 20px" id="dropdown-Search" class="dropdown-menu cell" action="{{.AppUrl}}{{($.records | ModelName)}}" method="GET">
         {{.xsrf_html}}{{.once_html}}
         {{template "common/form/fields.html" $.FSearchSets}}
 
-        {{ CommonTag "submit" (i18n .Lang "search") "class=btn btn-xs btn-primary" }}
+        {{ CommonTag "submit" (i18n .Lang "search") "class=btn btn-small btn-primary" }}
     </form>
 </div>
 {{end}}
@@ -38,29 +38,4 @@
 </table>
 {{end}}
 
-{{if gt .paginator.PageNums 1}}
-
-<ul class="pagination pagination-small" >
-    {{if .paginator.HasPrev}}
-    <li><a href="{{.paginator.PageLinkFirst}}">First</a></li>
-    <li><a href="{{.paginator.PageLinkPrev}}">&lt;</a></li>
-    {{else}}
-    <li class="disabled"><a>First</a></li>
-    <li class="disabled"><a>&lt;</a></li>
-    {{end}}
-    {{range $index, $page := .paginator.Pages}}
-    <li{{if $.paginator.IsActive .}} class="active" {{end}} >
-    <a href="{{$.paginator.PageLink $page}}">{{$page}}</a>
-    </li>
-    {{end}}
-    {{if .paginator.HasNext}}
-    <li><a href="{{.paginator.PageLinkNext}}">&gt;</a></li>
-    <li><a href="{{.paginator.PageLinkLast}}">Last</a></li>
-    {{else}}
-    <li class="disabled"><a>&gt;</a></li>
-    <li class="disabled"><a>Last</a></li>
-    {{end}}
-</ul>
-
-{{end}}
 

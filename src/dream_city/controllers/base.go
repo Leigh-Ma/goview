@@ -77,9 +77,11 @@ func (c *baseController) renderJson(json *D) {
 	c.ServeJSON()
 }
 
-func (c *baseController) renderView(template string, data *D) {
-	for key, value := range data.Map() {
+func (c *baseController) renderView(template string, data... *D) {
+    if len(data) > 0 {
+		for key, value := range data[0].Map() {
 		c.Data[key] = value
+		}
 	}
 
 	c.Data["locale"] = "zh-CN"

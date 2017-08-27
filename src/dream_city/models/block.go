@@ -22,34 +22,24 @@ func init() {
 	orm.RegisterModel(new(Block))
 }
 
+func (b *Block) HiddenCols(auth string) ([]string) {
+	return []string{"Status", "fake"}
+}
+
+func (b *Block) WrapCols(col string) string {
+	switch col {
+	case "UserId":
+		return b.OwnerName()
+	case "UpUserId":
+		return strings.Join(b.UpNames(), ", ")
+	case "DownUserId":
+		return strings.Join(b.DownNames(), ", ")
+	}
+	return ""
+}
+
 func (b *Block) TableName() string{
 	return "blocks"
-}
-
-func (b *Block) Show(name... string) ([]interface{}){
-	return []interface{}{
-		b.Id,
-		b.UpdatedAt,
-		b.OwnerName(),
-		b.Name,
-		b.CityName,
-		b.Status,
-		b.UpNames(),
-		b.DownNames(),
-	}
-}
-
-func (b *Block) Titles(name... string)[]string{
-	return []string{
-		"ID",
-		"更新",
-		"用户",
-		"地块",
-		"城市",
-		"状态",
-		"上游用户",
-		"下游用户",
-	}
 }
 
 func (b *Block) OwnerName() string{

@@ -49,7 +49,53 @@ func (c *BlockController) Index() {
 
 	c.SetFormSets(f, "FSearch")
 
+	c.setColumnForm(f, "")
+
 	c.renderView("blocks/index.html", &D{
+		"paginator": page,
+		"records":   instances,
+	})
+
+}
+
+func (c *BlockController) Test() {
+	cond := orm.NewCondition()
+
+	f := &FSearchBlock{}
+	c.ValidFormSets(f)
+
+	beego.Info("FSearchBlock", f)
+
+
+	if f.UserName != "" {
+		u := &User{}
+		u.LoadByName(f.UserName)
+		cond = cond.And("UserId", u.Id)
+	}
+
+	if f.CityName != "" {
+		cond = cond.And("CityName", f.CityName)
+	}
+
+	if f.BlockName != "" {
+		s := strings.Split(f.BlockName, ",")
+		if len(s) > 1 {
+			cond = cond.And("Name__in", s)
+		} else {
+			cond = cond.And("Name__startswith", f.BlockName)
+		}
+	}
+
+	qs := NewQuery((*Block)(nil)).SetCond(cond)
+	page := c.paginate(qs, 20)
+
+	instances := make([]*Block, 0)
+
+	qs.Limit(20, page.Offset()).All(&instances)
+
+	c.setPaginates(instances, page)
+
+	c.renderView("blocks/test.html", &D{
 		"paginator": page,
 		"records":   instances,
 	})

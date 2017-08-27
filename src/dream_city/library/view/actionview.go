@@ -7,9 +7,16 @@ import (
 	"dream_city/library/tools"
 )
 
+const (
+	LabelStyleBold = "bold"
+	labelStyleLabel = "lable"
+	LabelStylePlaceHolder = "placeHoder"
+)
+
+
 type htmlTagOption struct {
 	options map[string]string
-	raw     string  `example: "type: submit, class: btn btn-default "`
+	raw     string  `example: "type=submit, class=btn btn-default "`
 }
 
 func NewHtmlTagOption(option string)(*htmlTagOption){

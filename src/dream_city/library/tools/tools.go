@@ -48,6 +48,9 @@ func asString(record interface{}, withAddress bool) string {
 	t := reflect.TypeOf(record)
 	v := reflect.ValueOf(record)
 	s := ""
+	if t == nil {
+		return "nil"
+	}
 	//s += fmt.Sprintf("(%s)", t.Kind().String())
 	switch t.Kind() {
 	case reflect.Ptr:

@@ -1,1 +1,7 @@
 {{ template "common/_page.html" .}}
+
+<form style="padding: 20px 20px 20px 20px" action="{{.AppUrl}}{{($.records | ModelName)}}" method="GET">
+    {{.xsrf_html}}{{.once_html}}
+    {{ .FSearchBlock.AsFormInputs "" }}
+
+</form>
